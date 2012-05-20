@@ -1,4 +1,25 @@
-bid-scaffold-example
-====================
+# Sample Node/Express site using BrowserID
 
-Example Node/Express site using BrowserID
+## Installation instructions
+
+Clone the repository
+
+> git clone git://github.com/ednapiranha/bid-scaffold-example.git
+
+> curl http://npmjs.org/install.sh | sh
+
+Install node by using brew or through the website http://nodejs.org/#download
+
+> cd bid-scaffold-example
+
+> cp settings.js-dist settings.js
+
+> npm install
+
+Run the site
+
+> node app.js
+
+## Tests
+
+> make test
