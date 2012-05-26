@@ -10,7 +10,7 @@
     "client-sessions": "0.0.3",
     "connect": "1.8.6",
     "express": "2.5.9",
-    "nock": "0.10.7",
+    "nock": "0.13.0",
     "jade": ">= 0.0.1",
     "mocha": "0.14.1",
     "request": "2.9.153",
