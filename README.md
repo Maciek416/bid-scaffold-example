@@ -12,7 +12,7 @@ Install node by using brew or through the website http://nodejs.org/#download
 
 > cd bid-scaffold-example
 
-> cp settings.js-dist settings.js
+> cp local.json-dist local.json
 
 > npm install
 

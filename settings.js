@@ -1,13 +1,9 @@
 // Module dependencies.
 module.exports = function(app, configurations, express) {
   var clientSessions = require('client-sessions');
+  var nconf = require('nconf');
 
-  var options = { 
-    domain: 'http://localhost',
-    port: process.env.PORT || 3000,
-    authPort: process.env.AUTH_PORT || 3000,
-    authUrl: 'https://browserid.org'
-  };
+  nconf.argv().env().file({ file: 'local.json' });
 
   // Configuration
 
@@ -19,13 +15,13 @@ module.exports = function(app, configurations, express) {
     app.use(express.methodOverride());
     app.use(express.static(__dirname + '/public'));
     app.use(clientSessions({
-      cookieName: 'session_bid',
-      secret: 'secret', // MUST be set
+      cookieName: nconf.get('session_cookie'),
+      secret: nconf.get('session_secret'), // MUST be set
       // true session duration:
       // will expire after duration (ms)
       // from last session.reset() or
       // initial cookieing.
-      duration: 24 * 60 * 60 * 1000 * 28, // 4 weeks
+      duration: 24 * 60 * 60 * 1000 * 28 // 4 weeks
     }));
     app.use(app.router);
   });
@@ -44,8 +40,5 @@ module.exports = function(app, configurations, express) {
     }
   });
 
-  configurations.app = app;
-  configurations.options = options;
-
-  return configurations;
+  return app;
 };
