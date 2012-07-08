@@ -30,7 +30,7 @@ describe('login', function() {
         }
       };
 
-      var authResp = auth.verify(params, nconf, function(error, email) {
+      auth.verify(params, nconf, function(error, email) {
         should.not.exist(error);
         email.should.equal(response.email);
         done();
@@ -50,7 +50,7 @@ describe('login', function() {
         }
       };
 
-      var authResp = auth.verify(params, nconf, function(error, email) {
+      auth.verify(params, nconf, function(error, email) {
         should.exist(error);
         error.status.should.equal(response.status);
         done();
