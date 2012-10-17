@@ -1,19 +1,56 @@
 'use strict';
 
-$(function() {
-  var currentUser;
-  var loginForm = $('form#login-form');
+requirejs.config({
+  baseUrl: '/javascripts',
+  enforceDefine: true,
+  paths: {
+    jquery: '/javascripts/jquery'
+  }
+});
 
-  loginForm.on('click', '#login', function() {
+define(['jquery'],
+  function($) {
+
+  var login = $('#login');
+  var logout = $('#logout');
+
+  login.click(function(ev) {
+    ev.preventDefault();
     navigator.id.request();
   });
 
+  logout.click(function(ev) {
+    ev.preventDefault();
+    navigator.id.logout();
+  });
+
   navigator.id.watch({
-    loggedInEmail: currentUser,
+    loggedInUser: currentUser,
     onlogin: function(assertion) {
-      loginForm.find('input[name="bid_assertion"]').val(assertion);
-      loginForm.submit();
+      $.ajax({
+        type: 'POST',
+        url: '/login',
+        data: { assertion: assertion },
+        success: function(res, status, xhr) {
+          currentUser = res.email;
+          window.location.reload();
+        },
+        error: function(res, status, xhr) {
+          console.log('login failure ' + res);
+        }
+      });
     },
-    onlogout: function() { }
+    onlogout: function() {
+      $.ajax({
+        type: 'GET',
+        url: '/logout',
+        success: function(res, status, xhr) {
+          window.location.reload();
+        },
+        error: function(res, status, xhr) {
+          console.log('logout failure ' + res);
+        }
+      });
+    }
   });
 });

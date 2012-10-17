@@ -1,3 +1,5 @@
+'use strict';
+
 var auth = require('../lib/authenticate');
 
 module.exports = function(app, nconf) {
@@ -13,9 +15,9 @@ module.exports = function(app, nconf) {
 
   // Logout
   app.get('/logout', function(req, res) {
-    if (req.session) {
-      delete req.session.email;
-    }
-    res.redirect('/?logged_out=1', 303);
+    req.session.reset();
+    res.json({
+      'message': 'logged out'
+    });
   });
 };
