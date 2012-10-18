@@ -19,9 +19,12 @@ var isLoggedIn = function(req, res, next) {
   }
 };
 
+require('express-persona')(app, {
+  audience: nconf.get('domain') + ':' + nconf.get('authPort')
+});
+
 // routes
 require("./routes")(app, client, isLoggedIn);
-require('./routes/auth')(app, nconf);
 
 app.get('/404', function(req, res, next){
   next();

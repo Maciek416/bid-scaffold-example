@@ -15,9 +15,7 @@ html
     if session.email
       a(href='#', id='logout') Log out
     else
-      form(method='post', action='/login', id='login-form')
-        a(href='#', id='login') Log in
-        input(type='hidden', name='assertion', value='1')
+      a(href='#', id='login') Log in
 
     block content
     #footer

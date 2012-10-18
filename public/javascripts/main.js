@@ -11,46 +11,35 @@ requirejs.config({
 define(['jquery'],
   function($) {
 
-  var login = $('#login');
-  var logout = $('#logout');
+  var body = $('body');
 
-  login.click(function(ev) {
+  body.on('click', '#login', function(ev) {
     ev.preventDefault();
-    navigator.id.request();
-  });
+    navigator.id.get(function(assertion) {
+      if (!assertion) {
+        return;
+      }
 
-  logout.click(function(ev) {
-    ev.preventDefault();
-    navigator.id.logout();
-  });
+      var xhr = new XMLHttpRequest();
 
-  navigator.id.watch({
-    loggedInUser: currentUser,
-    onlogin: function(assertion) {
-      $.ajax({
-        type: 'POST',
-        url: '/login',
-        data: { assertion: assertion },
-        success: function(res, status, xhr) {
-          currentUser = res.email;
-          window.location.reload();
-        },
-        error: function(res, status, xhr) {
-          console.log('login failure ' + res);
+      xhr.open("POST", "/persona/verify", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.addEventListener("loadend", function(e) {
+        try {
+          var data = JSON.parse(this.response);
+          if (data.status === "okay") {
+            document.location.href = '/';
+          } else {
+            console.log('Login failed because ' + data.reason);
+          }
+        } catch (ex) {
+          console.log('Invalid JSON received');
         }
-      });
-    },
-    onlogout: function() {
-      $.ajax({
-        type: 'GET',
-        url: '/logout',
-        success: function(res, status, xhr) {
-          window.location.reload();
-        },
-        error: function(res, status, xhr) {
-          console.log('logout failure ' + res);
-        }
-      });
-    }
+      }, false);
+
+      xhr.send(JSON.stringify({
+        assertion: assertion
+      }));
+    });
   });
 });
