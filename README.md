@@ -1,4 +1,4 @@
-# Sample Node/Express site using BrowserID
+# Sample Node/Express site using Persona
 
 ## Installation instructions
 
