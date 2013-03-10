@@ -1,15 +1,7 @@
-'use strict';
-
-requirejs.config({
-  baseUrl: '/javascripts',
-  enforceDefine: true,
-  paths: {
-    jquery: '/javascripts/jquery'
-  }
-});
-
 define(['jquery'],
   function($) {
+
+  'use strict';
 
   var body = $('body');
 
