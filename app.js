@@ -24,17 +24,4 @@ require('express-persona')(app, {
 // routes
 require("./routes")(app, isLoggedIn);
 
-app.get('/404', function(req, res, next){
-  next();
-});
-
-app.get('/403', function(req, res, next){
-  err.status = 403;
-  next(new Error('not allowed!'));
-});
-
-app.get('/500', function(req, res, next){
-  next(new Error('something went wrong!'));
-});
-
 app.listen(process.env.PORT || nconf.get('port'));
