@@ -42,18 +42,17 @@ module.exports = function(app, configurations, express) {
       res.render('403', { url: req.url, layout: false });
       return;
     });
+  });
+
+  app.configure('development', function(){
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  });
+
+  app.configure('prod', 'test', function(){
     app.use(function(err, req, res, next) {
       res.status(err.status || 500);
       res.render('500', { error: err, layout: false });
     });
-  });
-
-  app.configure('development, test', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  });
-
-  app.configure('prod', function(){
-    app.use(express.errorHandler());
   });
 
   return app;
